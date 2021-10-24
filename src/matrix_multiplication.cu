@@ -12,7 +12,20 @@ __global__ void matrix_multiply_simple(float *a, float *b, float *ab, size_t wid
 {
     //TODO: write the kernel to perform matrix a times b, store results into ab.
     // width is the size of the square matrix along one dimension.
+    
+    //getting the row and column
+	int row = blockIdx.y * blockDim.y + threadIdx.y;
+	int column = blockIdx.x * blockDim.x + threadIdx.x;
 
+	if((row < width) && column < width)
+	{
+		float pvalue = 0;
+		for(int j = 0; j < width; j++)
+		{
+		pvalue += a[row * width + j] * b[j * width + column];
+		}
+		ab[row * width + column] = pvalue;
+	}
 }
 
 void usage()
